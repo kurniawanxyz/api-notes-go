@@ -36,16 +36,16 @@ func (r *UserRepository) Store(user *domain.User) (*domain.User, error) {
 	return user, nil
 }
 
-func (r *UserRepository) Update(id int, data *domain.User) (domain.User,error) {
+func (r *UserRepository) Update(id int, data *domain.User) (*domain.User,error) {
 	var user domain.User
 	if err := r.DB.First(&user, id).Error; err != nil {
-		return domain.User{}, err
+		return nil, err
 	}
 	
 	if err := r.DB.Model(&user).Updates(data).Error; err != nil {
-		return domain.User{}, err
+		return nil, err
 	}
-	return user, nil
+	return &user, nil
 }
 
 func (r *UserRepository) Delete(id int) error {

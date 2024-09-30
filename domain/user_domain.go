@@ -14,6 +14,6 @@ type UserRepository interface {
 	Index() ([]User, error)
 	Show(id int) (User, error)
 	Store(user *User) (*User, error)
-	Update(id int, data *User) (User, error)
+	Update(id int, data *User) (*User, error)
 	Delete(id int) error
 }

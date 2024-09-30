@@ -30,7 +30,7 @@ func (uc *UserUseCase) Store(user domain.User) (*domain.User, error) {
 	return uc.repo.Store(&user)
 }
 
-func (uc *UserUseCase) Update(id int, data *domain.User) (domain.User, error) {
+func (uc *UserUseCase) Update(id int, data *domain.User) (*domain.User, error) {
 	return uc.repo.Update(id, data)
 }
 
