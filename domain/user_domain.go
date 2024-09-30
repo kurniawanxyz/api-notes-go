@@ -10,9 +10,15 @@ type User struct {
 	CreatedAt time.Time `json:"created_at" gorm:"default:CURRENT_TIMESTAMP"`
 }
 
+type LoginRequest struct {
+	Email    string `json:"email" validate:"required,email,min=3,max=100"`
+	Password string `json:"password" validate:"required,min=8,max=255"`
+}
+
 type UserRepository interface {
 	Index() ([]User, error)
 	Show(id int) (User, error)
+	FindByEmail(email string) (User, error)
 	Store(user *User) (*User, error)
 	Update(id int, data *User) (*User, error)
 	Delete(id int) error

@@ -17,6 +17,10 @@ func (uc *UserUseCase) Index() ([]domain.User, error) {
 	return uc.repo.Index()
 }
 
+func (uc *UserUseCase) FindByEmail(email string) (domain.User, error) {
+	return uc.repo.FindByEmail(email)
+}
+
 func (uc *UserUseCase) Show(id int) (domain.User, error) {
 	return uc.repo.Show(id)
 }

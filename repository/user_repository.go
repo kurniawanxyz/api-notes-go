@@ -21,6 +21,14 @@ func (r *UserRepository) Index() ([]domain.User, error) {
 	return users, nil
 }
 
+func (r *UserRepository) FindByEmail(email string) (domain.User, error) {
+	var user domain.User
+	if err := r.DB.Where("email = ?", email).First(&user).Error; err != nil {
+		return domain.User{}, err
+	}
+	return user, nil
+}
+
 func (r *UserRepository) Show(id int) (domain.User, error){
 	var user domain.User
 	if err := r.DB.First(&user, id).Error; err != nil {

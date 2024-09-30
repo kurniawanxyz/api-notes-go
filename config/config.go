@@ -9,6 +9,7 @@ type Env struct {
 	DBHost string
 	DBPort int
 	ServerPort string
+	JWTSecret string
 }
 
 var ENV *Env
@@ -28,6 +29,7 @@ func LoadConfig() (*Env, error) {
 		DBHost: viper.GetString("DB_HOST"),
 		DBPort: viper.GetInt("DB_PORT"),
 		ServerPort: viper.GetString("SERVER_PORT"),
+		JWTSecret: viper.GetString("JWT_SECRET"),
 	}
 
 	ENV = env
