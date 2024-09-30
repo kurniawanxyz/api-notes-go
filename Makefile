@@ -25,3 +25,6 @@ migrate-force:
 		exit 1; \
 	fi; \
 	migrate -path ./db/migrations -database ${DATABASE_URL} force $$version
+
+migrate-version:
+	migrate -path ./db/migrations -database ${DATABASE_URL} version
