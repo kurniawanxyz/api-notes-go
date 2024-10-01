@@ -1,6 +1,8 @@
 package domain
 
-import "time"
+import (
+	"time"
+)
 
 type Folder struct {
 	ID          int       `json:"id" gorm:"primaryKey"`
@@ -8,6 +10,7 @@ type Folder struct {
 	Name        string    `json:"name" gorm:"required" validate:"required,min=3,max=255"`
 	Description string    `json:"description" gorm:"required" validate:"required,min=3,max=255"`
 	CreatedAt   time.Time `json:"created_at" gorm:"default:CURRENT_TIMESTAMP"`
+	Notes       []Note    `gorm:"foreignKey:FolderID"`
 }
 
 type UpdateFolderRequest struct {

@@ -30,6 +30,12 @@ func main() {
 	folderUseCase := usecase.NewFolderUseCase(folderRepo)
 	folderHandler := handler.NewFolderHandler(folderUseCase)
 
+	// note
+	noteRepo := repository.NewNoteRepository(db.DB)
+	noteUseCase := usecase.NewNoteUseCase(noteRepo)
+	noteHandler := handler.NewNoteHandler(noteUseCase)
+
+
 
 	gin := gin.Default()
 	r := gin.Group("/api")
@@ -46,6 +52,13 @@ func main() {
 	folder.PUT("/:id", folderHandler.Update)
 	folder.DELETE("/:id", folderHandler.Delete)
 
+	// note
+	note := r.Group("/note").Use(helper.JWTAuthMiddleware())
+	note.GET("/:folder_id", noteHandler.Index)
+	note.GET("/:folder_id/:id", noteHandler.Show)
+	note.POST("/:folder_id/store", noteHandler.Store)
+	note.PUT("/:folder_id/:id", noteHandler.Update)
+	note.DELETE("/:folder_id/:id", noteHandler.Delete)
 
 	// user
 	port := fmt.Sprintf(":%s", config.ENV.ServerPort)
