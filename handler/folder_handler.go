@@ -31,13 +31,20 @@ func (h *FolderHandler) Index(c *gin.Context){
 
 func (h *FolderHandler) Show(c *gin.Context){
 	user := helper.GetUserFromContext(c)
-	id := c.Param("id")
-	intID, err := strconv.Atoi(id)
+	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		helper.HandleResponse(c, 400, "Invalid folder ID")
 		return
 	}
-	folder, err := h.useCase.Show(intID, user.ID)
+	folder, err := h.useCase.Show(user.ID,id)
+
+	if folder.ID == 0 {
+		helper.HandleResponse(c, 404, gin.H{
+			"message": "Folder not found",
+		})
+		return
+	}
+
 	if err != nil {
 		helper.HandleResponse(c,500, err.Error())
 		return
@@ -93,5 +100,17 @@ func (h *FolderHandler) Update(c *gin.Context) {
 	}
 
 	helper.HandleResponse(c, http.StatusOK, result)
+}
 
+func (h *FolderHandler) Delete(c *gin.Context) {
+	user := helper.GetUserFromContext(c)
+	id, _ := strconv.Atoi(c.Param("id"))
+	err := h.useCase.Delete(user.ID, id)
+
+	if err != nil {
+		helper.HandleResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	helper.HandleResponse(c, http.StatusNoContent, nil)
 }

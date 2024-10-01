@@ -44,9 +44,7 @@ func main() {
 	folder.GET("/:id", folderHandler.Show)
 	folder.POST("/store", folderHandler.Store)
 	folder.PUT("/:id", folderHandler.Update)
-
-	
-
+	folder.DELETE("/:id", folderHandler.Delete)
 
 
 	// user
