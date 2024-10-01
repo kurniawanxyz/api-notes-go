@@ -105,12 +105,30 @@ func (h *FolderHandler) Update(c *gin.Context) {
 func (h *FolderHandler) Delete(c *gin.Context) {
 	user := helper.GetUserFromContext(c)
 	id, _ := strconv.Atoi(c.Param("id"))
-	err := h.useCase.Delete(user.ID, id)
+	
+	folder, err := h.useCase.Show(user.ID, id)
 
 	if err != nil {
+
+		if folder.ID == 0 {
+			helper.HandleResponse(c, 404, gin.H{
+				"message": "Folder not found",
+			})
+			return
+		}
+
+		helper.HandleResponse(c,500, err.Error())
+		return
+	}
+
+
+
+	if err := h.useCase.Delete(user.ID, id); err != nil {
 		helper.HandleResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
-	helper.HandleResponse(c, http.StatusNoContent, nil)
+	helper.HandleResponse(c, 200, gin.H{
+		"message": "Folder deleted",
+	})
 }
